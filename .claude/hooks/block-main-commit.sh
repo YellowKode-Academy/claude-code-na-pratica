@@ -3,7 +3,7 @@
 # Disparado em PreToolUse para qualquer chamada de Bash.
 
 input=$(cat)
-command=$(echo "$input" | jq -r '.tool_input.command // ""')
+command=$(echo "$input" | python3 -c "import sys,json; data=json.load(sys.stdin); print(data.get('tool_input', {}).get('command', ''))" 2>/dev/null || echo "")
 
 if [[ "$command" != *"git commit"* ]]; then
   exit 0

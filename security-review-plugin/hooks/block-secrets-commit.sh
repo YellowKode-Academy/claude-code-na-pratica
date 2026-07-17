@@ -3,14 +3,14 @@
 # Disparado em PreToolUse para qualquer chamada de Bash que contenha "git commit".
 
 input=$(cat)
-command=$(echo "$input" | jq -r '.tool_input.command // ""')
+command=$(echo "$input" | python3 -c "import sys,json; data=json.load(sys.stdin); print(data.get('tool_input', {}).get('command', ''))" 2>/dev/null || echo "")
 
 if [[ "$command" != *"git commit"* ]]; then
   exit 0
 fi
 
 secrets=$(git diff --cached | grep -E \
-  '(sk-[a-zA-Z0-9]{32,}|AIza[a-zA-Z0-9]{35}|ghp_[a-zA-Z0-9]{36}|Bearer [a-zA-Z0-9]{20,}|api[_-]?key["\047\s]*[:=]["\047\s]*[a-zA-Z0-9]{16,})' \
+  '(sk-[a-zA-Z0-9]{20,}|AIza[a-zA-Z0-9]{20,}|ghp_[a-zA-Z0-9]{20,}|Bearer [a-zA-Z0-9]{20,}|api.?key.{0,5}[a-zA-Z0-9]{16,})' \
   2>/dev/null)
 
 if [[ -n "$secrets" ]]; then
