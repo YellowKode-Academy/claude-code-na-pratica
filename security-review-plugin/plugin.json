@@ -1,0 +1,16 @@
+{
+  "name": "security-review-plugin",
+  "version": "1.0.0",
+  "description": "Plugin de revisão de segurança para Pull Requests. Inclui checklist de segurança, subagente especializado e hook de bloqueio de secrets em commits.",
+  "components": {
+    "skills": [
+      "skills/checklist-seguranca-pr/SKILL.md"
+    ],
+    "subagents": [
+      "subagents/security-agent.md"
+    ],
+    "hooks": [
+      "hooks/block-secrets-commit.sh"
+    ]
+  }
+}

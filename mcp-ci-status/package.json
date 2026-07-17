@@ -1,0 +1,12 @@
+{
+  "name": "ci-status-mcp-server",
+  "version": "1.0.0",
+  "description": "Servidor MCP para consultar status de checks de CI de Pull Requests",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0"
+  }
+}
