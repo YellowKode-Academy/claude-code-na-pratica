@@ -1,6 +1,6 @@
 #!/bin/bash
-# Bloqueia commits diretos na branch principal (main ou master).
-# Disparado em PreToolUse para qualquer chamada de Bash.
+# Blocks direct commits to the main branch (main or master).
+# Fired on PreToolUse for every Bash call.
 
 input=$(cat)
 command=$(echo "$input" | python3 -c "import sys,json; data=json.load(sys.stdin); print(data.get('tool_input', {}).get('command', ''))" 2>/dev/null || echo "")
@@ -12,7 +12,7 @@ fi
 branch=$(git branch --show-current)
 
 if [[ "$branch" == "main" || "$branch" == "master" ]]; then
-  echo "Commit direto em '$branch' bloqueado. Crie uma branch de trabalho antes de commitar." >&2
+  echo "Direct commit to '$branch' blocked. Create a working branch before committing." >&2
   exit 2
 fi
 

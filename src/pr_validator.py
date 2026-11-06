@@ -1,21 +1,21 @@
-"""Validador de Pull Requests para o revisor autônomo."""
+"""Pull Request validator for the autonomous reviewer."""
 
 
 def validate_pr_title(title: str) -> bool:
-    """Valida que o título do PR não é vazio após strip."""
+    """Validates that the PR title is not empty after strip."""
     if not title.strip():
-        raise ValueError("Título não pode ser vazio")
+        raise ValueError("Title cannot be empty")
     return True
 
 
 def validate_pr_size(diff_lines: int, max_lines: int = 200) -> bool:
-    """Valida que o PR não ultrapassa o limite de linhas para aprovação automática."""
+    """Validates that the PR does not exceed the line limit for automatic approval."""
     if diff_lines > max_lines:
-        raise ValueError(f"PR muito grande para aprovação automática ({diff_lines} linhas, limite {max_lines})")
+        raise ValueError(f"PR too large for automatic approval ({diff_lines} lines, limit {max_lines})")
     return True
 
 
 def touches_sensitive_area(changed_files: list[str]) -> bool:
-    """Retorna True se algum arquivo alterado pertence a área sensível (auth/ ou billing/)."""
+    """Returns True if any changed file belongs to a sensitive area (auth/ or billing/)."""
     sensitive = ("auth/", "billing/")
     return any(f.startswith(sensitive) for f in changed_files)

@@ -1,76 +1,78 @@
-# Claude Code na Prática — Repositório Companion
+# Claude Code in Practice: Companion Repository
 
-Repositório do projeto-fio-condutor do livro **Claude Code na Prática** (IA na Prática Vol.9 — YellowKode Academy).
+> **English edition.** You are on the `en` branch, the companion of the book **Claude Code in Practice**.
+> Clone it with: `git clone -b en https://github.com/YellowKode-Academy/claude-code-na-pratica.git`
+> The `main` branch holds the original Portuguese edition (*Claude Code na Prática*). The code is the same.
 
-## O que é este projeto
+This is the running project of the book **Claude Code in Practice** by Kelvin Baumhardt Biffi (YellowKode Academy).
 
-Um **revisor de PR autônomo** construído ao longo dos 11 capítulos do livro. Cada capítulo adiciona uma camada ao sistema:
+## What this project is
 
-| Capítulo | Camada adicionada |
+An **autonomous PR reviewer** built across the book's 11 chapters. Each chapter adds one layer to the system:
+
+| Chapter | Layer added |
 |---|---|
-| Cap 1 | CLAUDE.md mínimo |
-| Cap 2 | CLAUDE.md expandido com convenções e critérios |
-| Cap 3 | `src/pr_validator.py` + `tests/` (tools nativas) |
-| Cap 4 | `mcp-ci-status/` (servidor MCP de CI) |
-| Cap 5 | `.claude/agents/testes.md` (primeiro subagente) |
-| Cap 6 | `.claude/agents/seguranca.md` + `estilo.md` (paralelo) |
-| Cap 7 | `.claude/skills/checklist-seguranca-pr/` |
-| Cap 8 | `security-review-plugin/` (plugin distribuível) |
-| Cap 9 | `.claude/settings.json` com permissões calibradas |
-| Cap 10 | `.claude/hooks/block-main-commit.sh` |
-| Cap 11 | Sistema completo em operação autônoma |
+| Ch. 1 | Minimal CLAUDE.md |
+| Ch. 2 | CLAUDE.md expanded with conventions and criteria |
+| Ch. 3 | `src/pr_validator.py` + `tests/` (built-in tools) |
+| Ch. 4 | `mcp-ci-status/` (CI MCP server) |
+| Ch. 5 | `.claude/agents/tests.md` (first subagent) |
+| Ch. 6 | `.claude/agents/security.md` + `style.md` (parallel) |
+| Ch. 7 | `.claude/skills/pr-security-checklist/` |
+| Ch. 8 | `security-review-plugin/` (distributable plugin) |
+| Ch. 9 | `.claude/settings.json` with calibrated permissions |
+| Ch. 10 | `.claude/hooks/block-main-commit.sh` |
+| Ch. 11 | Complete system running autonomously |
 
-## Estrutura do repositório
+## Repository layout
 
 ```
 .
-├── CLAUDE.md                          # Contexto persistente do projeto
-├── requirements.txt                   # Dependências Python
+├── CLAUDE.md                          # Persistent project context
+├── requirements.txt                   # Python dependencies
 ├── src/
-│   └── pr_validator.py               # Validador de PRs
+│   └── pr_validator.py               # PR validator
 ├── tests/
-│   └── test_pr_validator.py          # Testes do validador
+│   └── test_pr_validator.py          # Validator tests
 ├── mcp-ci-status/
 │   ├── package.json
-│   └── server.js                     # Servidor MCP de status de CI
-├── tasks/                            # Relatórios de revisão por PR
+│   └── server.js                     # CI status MCP server
+├── tasks/                            # Review reports per PR
 ├── .claude/
-│   ├── settings.json                 # Permissões + hooks + MCP
+│   ├── settings.json                 # Permissions + hooks + MCP
 │   ├── agents/
-│   │   ├── testes.md                 # Subagente: cobertura de testes
-│   │   ├── seguranca.md              # Subagente: segurança
-│   │   └── estilo.md                 # Subagente: estilo e convenções
+│   │   ├── tests.md                  # Subagent: test coverage
+│   │   ├── security.md               # Subagent: security
+│   │   └── style.md                  # Subagent: style and conventions
 │   ├── skills/
-│   │   └── checklist-seguranca-pr/
-│   │       └── SKILL.md              # Checklist de segurança
+│   │   └── pr-security-checklist/
+│   │       └── SKILL.md              # Security checklist
 │   └── hooks/
-│       └── block-main-commit.sh      # Hook: bloqueia commit em main
-└── security-review-plugin/           # Plugin distribuível (Cap 8)
+│       └── block-main-commit.sh      # Hook: blocks commits to main
+└── security-review-plugin/           # Distributable plugin (Ch. 8)
 ```
 
-## Como usar
+## How to use
 
 ```bash
-# Rodar os testes
+# Run the tests
 pytest tests/ -v
 
-# Iniciar o servidor MCP de CI (gerenciado automaticamente pelo Claude Code)
+# Start the CI MCP server (Claude Code manages it automatically)
 node ./mcp-ci-status/server.js
 
-# Revisar um PR com o sistema completo
-# Abra o Claude Code neste repositório e peça:
-# "Revise o PR #NNN usando os subagentes de segurança, testes e estilo em paralelo."
+# Review a PR with the complete system
+# Open Claude Code in this repository and ask:
+# "Review PR #NNN using the security, tests and style subagents in parallel."
 ```
 
-## Pré-requisitos
+## Prerequisites
 
 - Python 3.12+
-- Node.js 18+ (para o servidor MCP)
+- Node.js 18+ (for the MCP server)
 - Claude Code CLI
-- `jq` instalado no sistema (para os hooks)
+- `python3` available on the PATH (the hooks use it to read the JSON input)
 
-## Livro
+## The book
 
-**Claude Code na Prática** — disponível no Amazon KDP.
-Série IA na Prática, Vol.9 — YellowKode Academy.
-Autor: Kelvin Baumhardt Biffi
+**Claude Code in Practice** by Kelvin Baumhardt Biffi, YellowKode Academy. Available on Amazon Kindle.

@@ -1,36 +1,36 @@
-# CLAUDE.md: Revisor de PR Autônomo
+# CLAUDE.md: Autonomous PR Reviewer
 
-## O que este projeto faz
+## What this project does
 
-Analisa Pull Requests do GitHub e comenta automaticamente sobre segurança,
-cobertura de testes e estilo de código, antes da revisão humana.
+Analyzes GitHub Pull Requests and comments automatically on security,
+test coverage and code style, before the human review.
 
 ## Stack
 
-Python 3.12, pytest, PyGithub para acesso à API do GitHub.
+Python 3.12, pytest, PyGithub for GitHub API access.
 
-## Como rodar os testes
+## How to run the tests
 
 pytest tests/ -v
 
-## Convenções do repositório
+## Repository conventions
 
-- Testes ficam em `tests/`, nomeados `test_<funcionalidade>.py`
-- Toda função pública tem type hint e docstring de uma linha
-- Commits seguem Conventional Commits (`feat:`, `fix:`, `chore:`)
+- Tests live in `tests/`, named `test_<feature>.py`
+- Every public function has a type hint and a one-line docstring
+- Commits follow Conventional Commits (`feat:`, `fix:`, `chore:`)
 
-## Áreas sensíveis (exigem aprovação humana explícita)
+## Sensitive areas (require explicit human approval)
 
-- `auth/`: autenticação e geração de tokens
-- `billing/`: qualquer lógica de cobrança
+- `auth/`: authentication and token generation
+- `billing/`: any billing logic
 
-## Critério de aprovação automática de PR
+## Automatic PR approval criteria
 
-Só comente aprovação se: testes novos cobrem a mudança,
-nenhuma área sensível foi tocada, e o diff tem menos de 200 linhas.
+Only comment an approval if: new tests cover the change,
+no sensitive area was touched, and the diff has fewer than 200 lines.
 
-## Estado atual
+## Current state
 
-Sistema completo com três subagentes paralelos (segurança, testes, estilo),
-skill de checklist de segurança reutilizável e hook de bloqueio de commit
-em branch protegida. Servidor MCP conectado ao pipeline de CI.
+Complete system with three parallel subagents (security, tests, style),
+a reusable security checklist skill and a hook that blocks commits
+on a protected branch. MCP server connected to the CI pipeline.

@@ -15,7 +15,7 @@ class TestValidatePrTitle:
         assert validate_pr_title("feat: add new endpoint") is True
 
     def test_accepts_conventional_commit_format(self):
-        assert validate_pr_title("fix: corrige validacao de token") is True
+        assert validate_pr_title("fix: correct token validation") is True
 
 
 class TestValidatePrSize:

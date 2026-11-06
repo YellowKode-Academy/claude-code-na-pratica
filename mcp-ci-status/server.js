@@ -13,13 +13,13 @@ server.setRequestHandler(ListToolsRequestSchema, async () => ({
   tools: [
     {
       name: 'get_pr_checks',
-      description: 'Consulta o status de todos os checks de CI de um pull request pelo número',
+      description: 'Gets the status of every CI check on a pull request by number',
       inputSchema: {
         type: 'object',
         properties: {
           pr_number: {
             type: 'integer',
-            description: 'Número do Pull Request'
+            description: 'Pull Request number'
           }
         },
         required: ['pr_number']
@@ -27,13 +27,13 @@ server.setRequestHandler(ListToolsRequestSchema, async () => ({
     },
     {
       name: 'get_job_log',
-      description: 'Retorna o log completo de um job de CI pelo ID, para investigar falhas',
+      description: 'Returns the full log of a CI job by ID, to investigate failures',
       inputSchema: {
         type: 'object',
         properties: {
           job_id: {
             type: 'string',
-            description: 'ID do job de CI retornado por get_pr_checks'
+            description: 'CI job ID returned by get_pr_checks'
           }
         },
         required: ['job_id']
@@ -46,8 +46,8 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
   const { name, arguments: args } = request.params;
 
   if (name === 'get_pr_checks') {
-    // Em produção: substituir pela chamada real à API do seu serviço de CI
-    // usando CI_API_TOKEN para autenticação
+    // In production: replace with the real call to your CI service's API
+    // using CI_API_TOKEN for authentication
     return {
       content: [{
         type: 'text',
@@ -64,16 +64,16 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
   }
 
   if (name === 'get_job_log') {
-    // Em produção: buscar log real do job na API do CI
+    // In production: fetch the job's real log from the CI API
     return {
       content: [{
         type: 'text',
-        text: `Log do job ${args.job_id}:\n[INFO] Iniciando execução\n[INFO] Todos os passos concluídos com sucesso\n[INFO] Tempo total: 47s`
+        text: `Log for job ${args.job_id}:\n[INFO] Starting run\n[INFO] All steps completed successfully\n[INFO] Total time: 47s`
       }]
     };
   }
 
-  throw new Error(`Tool desconhecida: ${name}`);
+  throw new Error(`Unknown tool: ${name}`);
 });
 
 const transport = new StdioServerTransport();

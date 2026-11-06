@@ -1,6 +1,6 @@
 #!/bin/bash
-# Bloqueia commits que contenham padrões reconhecíveis de secrets no diff staged.
-# Disparado em PreToolUse para qualquer chamada de Bash que contenha "git commit".
+# Blocks commits whose staged diff contains recognizable secret patterns.
+# Fired on PreToolUse for every Bash call that contains "git commit".
 
 input=$(cat)
 command=$(echo "$input" | python3 -c "import sys,json; data=json.load(sys.stdin); print(data.get('tool_input', {}).get('command', ''))" 2>/dev/null || echo "")
@@ -14,7 +14,7 @@ secrets=$(git diff --cached | grep -E \
   2>/dev/null)
 
 if [[ -n "$secrets" ]]; then
-  echo "Commit bloqueado: possível secret detectado no diff staged. Revise antes de commitar." >&2
+  echo "Commit blocked: possible secret detected in the staged diff. Review it before committing." >&2
   exit 2
 fi
 

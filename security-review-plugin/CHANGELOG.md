@@ -2,7 +2,7 @@
 
 ## [1.0.0] - 2026-07-17
 
-### Adicionado
-- Skill de checklist de segurança para revisão de PRs (5 itens: secrets, injeção, parametrização, permissões, CVEs)
-- Subagente `security-agent` com acesso restrito a leitura (Read, Grep, Glob)
-- Hook `block-secrets-commit.sh` que bloqueia commits com padrões de API keys, tokens Bearer e chaves reconhecíveis
+### Added
+- Security checklist skill for PR reviews (5 items: secrets, injection, parameterization, permissions, CVEs)
+- `security-agent` subagent with read-only access (Read, Grep, Glob)
+- `block-secrets-commit.sh` hook that blocks commits containing API key patterns, Bearer tokens and recognizable keys
