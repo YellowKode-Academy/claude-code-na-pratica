@@ -1,5 +1,7 @@
 # Claude Code na Prática — Repositório Companion
 
+> 🇺🇸 **English edition:** branch [`en`](https://github.com/YellowKode-Academy/claude-code-na-pratica/tree/en), companion of *Claude Code in Practice*.
+
 Repositório do projeto-fio-condutor do livro **Claude Code na Prática** (IA na Prática Vol.9 — YellowKode Academy).
 
 ## O que é este projeto
