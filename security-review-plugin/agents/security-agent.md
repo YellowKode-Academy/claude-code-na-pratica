@@ -1,8 +1,8 @@
 ---
+name: security-agent
 description: Audits a Pull Request diff for exposed secrets, vulnerable dependencies and insecure authentication or data access patterns.
 tools: Read, Grep, Glob
-model: claude-opus-4-8
-permissionMode: readOnly
+model: opus
 ---
 
 You are a reviewer specialized in code security.

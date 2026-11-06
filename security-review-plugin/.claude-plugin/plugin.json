@@ -1,0 +1,5 @@
+{
+  "name": "security-review-plugin",
+  "version": "1.0.0",
+  "description": "Security review plugin for Pull Requests. Includes a security checklist, a specialized subagent and a hook that blocks secrets in commits."
+}

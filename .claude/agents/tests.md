@@ -1,8 +1,8 @@
 ---
+name: tests
 description: Analyzes the test coverage of a Pull Request and points out gaps before the merge.
 tools: Read, Grep, Glob, Bash
-model: claude-sonnet-5
-permissionMode: readOnly
+model: sonnet
 maxTurns: 6
 ---
 
