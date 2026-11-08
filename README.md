@@ -33,8 +33,9 @@ An **autonomous PR reviewer** built across the book's 11 chapters. Each chapter 
 ├── requirements.txt                   # Python dependencies
 ├── src/
 │   └── pr_validator.py               # PR validator
-├── tests/                            # Validator tests + hook tests (test_hooks.py)
-│   └── test_pr_validator.py          # Validator tests
+├── tests/
+│   ├── test_pr_validator.py          # Validator tests
+│   └── test_hooks.py                 # Hook tests (bash + git)
 ├── mcp-ci-status/
 │   ├── package.json
 │   └── server.js                     # CI status MCP server
