@@ -1,0 +1,56 @@
+# Capítulo 11: o gatilho que inicia o revisor de PR sem ninguém digitar um comando.
+# Os hooks do Claude Code reagem às ações do próprio agente, não a eventos do GitHub,
+# então o gatilho fica aqui, no CI. O Claude Code roda em modo headless (claude -p), lê a
+# pasta .claude/ do projeto (subagentes, skill, permissões, hooks) e grava a revisão num arquivo.
+# Publicar o comentário é um passo separado, com o token do GitHub, para o agente nunca ter
+# permissão de escrita no repositório.
+#
+# Configuração: adicione ANTHROPIC_API_KEY em Settings > Secrets and variables > Actions.
+# PRs vindos de fork não recebem secrets, então este job pula esses PRs.
+name: Revisão de PR
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  review:
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Instalar dependências e o Claude Code
+        run: |
+          pip install -r requirements.txt
+          npm ci --prefix mcp-ci-status
+          npm install -g @anthropic-ai/claude-code
+
+      - name: Revisar o PR (headless)
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          BASE_REF: ${{ github.base_ref }}
+        run: |
+          claude -p "Revise as mudanças deste pull request (git diff origin/$BASE_REF...HEAD). Delegue aos subagentes seguranca, testes e estilo em paralelo e consolide os achados num relatório em Markdown com um veredito final: aprovar ou pedir mudanças." \
+            --allowedTools "Read" "Grep" "Glob" "Agent" "Bash(git diff:*)" "Bash(git log:*)" "Bash(pytest tests/:*)" \
+            --output-format text > review.md
+
+      - name: Publicar a revisão como comentário
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh pr comment "${{ github.event.pull_request.number }}" --body-file review.md

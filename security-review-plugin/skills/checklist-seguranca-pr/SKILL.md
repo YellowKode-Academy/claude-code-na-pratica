@@ -1,6 +1,6 @@
 ---
-nome: checklist-seguranca-pr
-descricao: Checklist de segurança para revisão de Pull Requests. Usar sempre que analisar mudanças de código quanto a secrets, injeção, permissões e dependências vulneráveis.
+name: checklist-seguranca-pr
+description: Checklist de segurança para revisão de Pull Requests. Usar sempre que analisar mudanças de código quanto a secrets, injeção, permissões e dependências vulneráveis.
 ---
 
 # Checklist de Segurança para PRs

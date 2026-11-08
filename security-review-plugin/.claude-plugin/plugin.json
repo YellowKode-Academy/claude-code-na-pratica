@@ -1,0 +1,8 @@
+{
+  "name": "security-review-plugin",
+  "version": "1.0.1",
+  "description": "Plugin de revisão de segurança para Pull Requests. Inclui checklist de segurança, subagente especializado e hook que bloqueia secrets em commits.",
+  "author": {
+    "name": "Kelvin Baumhardt Biffi"
+  }
+}

@@ -1,8 +1,8 @@
 ---
+name: testes
 description: Analisa cobertura de testes de um Pull Request e aponta lacunas antes do merge.
 tools: Read, Grep, Glob, Bash
-model: claude-sonnet-5
-permissionMode: readOnly
+model: sonnet
 maxTurns: 6
 ---
 

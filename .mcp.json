@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "ci-status": {
+      "command": "node",
+      "args": [
+        "./mcp-ci-status/server.js"
+      ],
+      "env": {
+        "CI_API_TOKEN": "${CI_API_TOKEN}"
+      }
+    }
+  }
+}

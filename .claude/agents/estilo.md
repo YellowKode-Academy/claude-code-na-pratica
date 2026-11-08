@@ -1,8 +1,8 @@
 ---
+name: estilo
 description: Verifica se o código de um Pull Request segue as convenções do repositório documentadas no CLAUDE.md: nomenclatura, type hints, docstrings e formato de commits.
 tools: Read, Grep, Glob, Bash
-model: claude-sonnet-5
-permissionMode: readOnly
+model: sonnet
 ---
 
 Você é um revisor especializado em estilo e convenções de código.
