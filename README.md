@@ -22,7 +22,7 @@ An **autonomous PR reviewer** built across the book's 11 chapters. Each chapter 
 | Ch. 8 | `security-review-plugin/` (distributable plugin) |
 | Ch. 9 | `.claude/settings.json` with calibrated permissions |
 | Ch. 10 | `.claude/hooks/block-main-commit.sh` |
-| Ch. 11 | Complete system running autonomously |
+| Ch. 11 | `.github/workflows/pr-review.yml` (CI trigger with `claude -p`) |
 
 ## Repository layout
 
@@ -33,7 +33,7 @@ An **autonomous PR reviewer** built across the book's 11 chapters. Each chapter 
 ├── requirements.txt                   # Python dependencies
 ├── src/
 │   └── pr_validator.py               # PR validator
-├── tests/
+├── tests/                            # Validator tests + hook tests (test_hooks.py)
 │   └── test_pr_validator.py          # Validator tests
 ├── mcp-ci-status/
 │   ├── package.json
@@ -50,6 +50,7 @@ An **autonomous PR reviewer** built across the book's 11 chapters. Each chapter 
 │   │       └── SKILL.md              # Security checklist
 │   └── hooks/
 │       └── block-main-commit.sh      # Hook: blocks commits to main
+├── .github/workflows/pr-review.yml   # CI trigger for the PR reviewer (Ch. 11)
 └── security-review-plugin/           # Distributable plugin (Ch. 8)
     ├── .claude-plugin/plugin.json     # Plugin manifest
     ├── skills/pr-security-checklist/
@@ -60,7 +61,7 @@ An **autonomous PR reviewer** built across the book's 11 chapters. Each chapter 
 ## How to use
 
 ```bash
-# Run the tests
+# Run the tests (includes the hook tests, which need bash and git)
 pytest tests/ -v
 
 # Start the CI MCP server (Claude Code manages it automatically)
@@ -76,7 +77,20 @@ node ./mcp-ci-status/server.js
 - Python 3.12+
 - Node.js 18+ (for the MCP server)
 - Claude Code CLI
-- `python3` available on the PATH (the hooks use it to read the JSON input)
+- `python3` or `python` available on the PATH (the hooks use it to read the JSON input)
+- For the CI workflow: an `ANTHROPIC_API_KEY` secret in the repository settings
+
+## Where this repository goes beyond the book
+
+The repository is updated after publication. These are the differences from the code printed in the book:
+
+- **Hooks (Ch. 10).** The book shows a short version of `block-main-commit.sh`. The scripts here are stricter:
+  - they recognize `git -C <dir> commit` and chained commands such as `git add . && git commit`;
+  - with `git commit -a`, the secrets hook reads `git diff HEAD`, because the files are only staged at commit time and `git diff --cached` would come back empty;
+  - they fail closed: if the tool input cannot be read, or no working Python is found, the Bash call is blocked instead of allowed.
+  
+  `tests/test_hooks.py` exercises each case. Run it after you change a hook.
+- **CI workflow (Ch. 11).** The chapter describes the trigger in general terms. `.github/workflows/pr-review.yml` is one concrete version: Claude Code runs headless on every pull request, writes the review to a file, and a separate step posts it as a comment.
 
 ## The book
 

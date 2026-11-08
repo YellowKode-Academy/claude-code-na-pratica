@@ -1,0 +1,56 @@
+# Chapter 11: the trigger that starts the PR reviewer without anyone typing a command.
+# Claude Code hooks react to the agent's own actions, not to GitHub events, so the
+# trigger lives here, in CI. Claude Code runs headless (claude -p), reads the project's
+# .claude/ folder (subagents, skill, permissions, hooks) and writes the review to a file.
+# Posting the comment is a separate step with the GitHub token, so the agent itself
+# never holds write access to the repository.
+#
+# Setup: add ANTHROPIC_API_KEY under Settings > Secrets and variables > Actions.
+# Pull requests from forks do not receive secrets, so this job skips them.
+name: PR review
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  review:
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install dependencies and Claude Code
+        run: |
+          pip install -r requirements.txt
+          npm ci --prefix mcp-ci-status
+          npm install -g @anthropic-ai/claude-code
+
+      - name: Review the pull request (headless)
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          BASE_REF: ${{ github.base_ref }}
+        run: |
+          claude -p "Review the changes in this pull request (git diff origin/$BASE_REF...HEAD). Delegate to the security, tests and style subagents in parallel, then consolidate their findings into one Markdown report with a final verdict: approve or request changes." \
+            --allowedTools "Read" "Grep" "Glob" "Agent" "Bash(git diff:*)" "Bash(git log:*)" "Bash(pytest tests/:*)" \
+            --output-format text > review.md
+
+      - name: Post the review as a comment
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh pr comment "${{ github.event.pull_request.number }}" --body-file review.md
